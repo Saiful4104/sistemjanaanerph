@@ -91,7 +91,15 @@ async function exportOfficialWord(){
   const dashParas=activityParas.filter(p=>p.textContent.trim()==='-');
   if(dashParas.length!==5)throw Error('Lima ruang aktiviti asal tidak ditemui; eksport dibatalkan.');
   phaseTexts.forEach((t,i)=>appendToPara(dashParas[i],t?' '+t:''));
-  setCell(8,1,r.materials||'');setCell(9,1,r.resources||'',1);
+  // Betulkan penjajaran kandungan BBM sahaja; template asal tidak diubah.
+   const bbmParagraph=all(cells(8)[1],'p')[0];
+   if(!bbmParagraph)throw Error('Ruang BBM template tidak ditemui.');
+   let bbmPPr=direct(bbmParagraph,'pPr')[0];
+   if(!bbmPPr){bbmPPr=dom.createElementNS(ns,'w:pPr');bbmParagraph.insertBefore(bbmPPr,bbmParagraph.firstChild)}
+   let bbmJc=direct(bbmPPr,'jc')[0];
+   if(!bbmJc){bbmJc=dom.createElementNS(ns,'w:jc');bbmPPr.appendChild(bbmJc)}
+   bbmJc.setAttributeNS(ns,'w:val','left');
+   setCell(8,1,r.materials||'');setCell(9,1,r.resources||'',1);
   const reflection=[r.achieved!==''&&r.achieved!=null?'Pencapaian objektif: '+r.achieved+' / '+r.n+' murid':'',r.strength?'Kekuatan: '+r.strength:'',r.weakness?'Kelemahan: '+r.weakness:'',r.improvement?'Penambahbaikan: '+r.improvement:''].filter(Boolean).join(' | ');
   setCell(10,1,reflection);
   zip.file('word/document.xml',new XMLSerializer().serializeToString(dom));
