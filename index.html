@@ -75,7 +75,6 @@ async function exportOfficialWord(){
   function appendToPara(p,value){
    if(!p||value===undefined||value===null||String(value)==='')return;
    const run=dom.createElementNS(ns,'w:r');
-   t.setAttribute('xml:space','preserve');
     const lines=String(value).split(/\r?\n/);
     lines.forEach((line,i)=>{if(i){run.appendChild(dom.createElementNS(ns,'w:br'))}const part=dom.createElementNS(ns,'w:t');part.setAttribute('xml:space','preserve');part.textContent=line;run.appendChild(part)});
     p.appendChild(run);
