@@ -27,7 +27,10 @@ async function saveActiveYear(){if(user?.role!=='admin')return;let y=Number($('a
 async function addAcademicYear(){if(user?.role!=='admin')return;let y=Number($('newYearInput').value);if(!Number.isInteger(y)||y<2020||y>2100)return alert('Masukkan tahun antara 2020 dan 2100.');try{await persistYears([...academicYears,y],activeYear);await reload();$('rptYear').value=String(y);renderRPT();alert('Tahun '+y+' tersedia. RPT tahun lain tidak diubah.')}catch(e){alert(errorText(e))}}
 async function addRPT(){if(user?.role!=='admin')return;let entry={year:selectedRPTYear(),level:$('formLevel').value,week:Number($('week').value),topic:$('topic').value.trim(),sk:$('sk').value.trim(),sp:$('sp').value.trim()};if(!entry.topic||!entry.sk||!entry.sp||!Number.isInteger(entry.week)||entry.week<1||entry.week>53)return alert('Lengkapkan semua medan RPT dan minggu 1–53.');try{await addDoc(collection(db,'rpt'),entry);await reload();$('rptYear').value=String(entry.year);renderRPT();alert('RPT '+entry.year+' disimpan ke Firestore.')}catch(e){alert(errorText(e))}}
 const pdfBank=[
+ {year:2026,level:'1',name:'RPT Pendidikan Islam Tingkatan 1 (2026)',path:'rpt/2026/RPT PI F1.pdf'},
+ {year:2026,level:'2',name:'RPT Pendidikan Islam Tingkatan 2 (2026)',path:'rpt/2026/RPT PI F2 2026.pdf'},
  {year:2026,level:'3',name:'RPT Pendidikan Islam Tingkatan 3 (2026)',path:'rpt/2026/RPT PI F3 2026.pdf'},
+ {year:2026,level:'4',name:'RPT Pendidikan Islam Tingkatan 4 (2026)',path:'rpt/2026/RPT PI F4.pdf'},
  {year:2026,level:'5',name:'RPT Pendidikan Islam Tingkatan 5 (2026)',path:'rpt/2026/RPT PI F5 2026.pdf'}
 ];
 function renderPDFBank(){
